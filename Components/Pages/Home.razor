@@ -1,0 +1,32 @@
+﻿@page "/"
+
+<h1>Calendar HeatMap Demo</h1>
+
+<CalendarHeatMap DataPoints="@heatMapData" 
+                 Title="Git Contributions Style" 
+                 Weeks="12" 
+                 ShowValues="true" />
+
+@code {
+    private List<HeatMapDataPoint> heatMapData = new();
+
+    protected override void OnInitialized()
+    {
+        // Generar datos de ejemplo
+        var random = new Random();
+        var startDate = DateTime.Now.AddDays(-84); // 12 semanas
+
+        for (int i = 0; i < 84; i++)
+        {
+            var date = startDate.AddDays(i);
+            var value = random.Next(0, 25);
+            
+            heatMapData.Add(new HeatMapDataPoint
+            {
+                Date = date,
+                Value = value,
+                Label = date.ToString("MMM dd, yyyy")
+            });
+        }
+    }
+}

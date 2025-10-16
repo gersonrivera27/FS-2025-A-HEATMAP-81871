@@ -1,0 +1,120 @@
+.calendar-heatmap {
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+.heatmap-header h3 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    color: #24292e;
+}
+
+.heatmap-grid {
+    position: relative;
+    display: inline-block;
+}
+
+.day-labels {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    float: left;
+}
+
+.day-label {
+    height: 15px;
+    line-height: 15px;
+    font-size: 11px;
+    color: #767676;
+    margin-bottom: 3px;
+}
+
+.heatmap-cells {
+    display: flex;
+    gap: 3px;
+    margin-left: 50px;
+}
+
+.week-column {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.heatmap-cell {
+    width: 15px;
+    height: 15px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.heatmap-cell:hover {
+    transform: scale(1.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.heatmap-0 {
+    background-color: #ebedf0;
+    color: #666;
+}
+
+.heatmap-5 {
+    background-color: #c6e48b;
+    color: #2d5016;
+}
+
+.heatmap-10 {
+    background-color: #7bc96f;
+    color: #1a4d0f;
+}
+
+.heatmap-15 {
+    background-color: #239a3b;
+    color: #ffffff;
+}
+
+.heatmap-20 {
+    background-color: #196127;
+    color: #ffffff;
+}
+
+.month-labels {
+    display: flex;
+    margin-left: 50px;
+    margin-top: 8px;
+    position: relative;
+    height: 20px;
+}
+
+.month-label {
+    position: absolute;
+    font-size: 11px;
+    color: #767676;
+}
+
+.heatmap-legend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 20px;
+    margin-left: 50px;
+}
+
+.legend-label {
+    font-size: 11px;
+    color: #767676;
+    margin: 0 4px;
+}
+
+.legend-cell {
+    width: 15px;
+    height: 15px;
+    border-radius: 2px;
+}

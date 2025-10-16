@@ -1,0 +1,27 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# ASP.NET temp files
+*.dbmdl
+
+# Publish files
+*.Publish.xml
+
+# Backup files
+*~
