@@ -1,0 +1,84 @@
+<div class="stat-card @(IsLoading ? "stat-card-loading" : "")" 
+     @onclick="HandleClick" 
+     style="@GetCardStyle()"
+     role="@(OnClick.HasDelegate ? "button" : "article")"
+     tabindex="@(OnClick.HasDelegate ? "0" : "-1")"
+     @onkeydown="HandleKeyDown">
+    
+    @if (IsLoading)
+    {
+        <div class="stat-card-spinner"></div>
+    }
+    else
+    {
+        <div class="stat-card-content">
+            @if (!string.IsNullOrEmpty(Icon))
+            {
+                <div class="stat-card-icon" style="color: @IconColor;">
+                    @Icon
+                </div>
+            }
+            
+            <div class="stat-card-data">
+                <div class="stat-card-value" aria-label="@AriaLabel">
+                    @FormattedValue
+                </div>
+                <div class="stat-card-label">
+                    @Label
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public decimal Value { get; set; }
+    
+    [Parameter]
+    public string Label { get; set; } = "Stat";
+    
+    [Parameter]
+    public string Icon { get; set; } = "📊";
+    
+    [Parameter]
+    public string IconColor { get; set; } = "#3b82f6";
+    
+    [Parameter]
+    public string BackgroundColor { get; set; } = "#ffffff";
+    
+    [Parameter]
+    public string Format { get; set; } = "N0"; // N0 = number with no decimals, C = currency, P = percentage
+    
+    [Parameter]
+    public bool IsLoading { get; set; } = false;
+    
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+    
+    [Parameter]
+    public string AriaLabel { get; set; } = "";
+
+    private string FormattedValue => Value.ToString(Format);
+
+    private string GetCardStyle()
+    {
+        return $"background-color: {BackgroundColor};";
+    }
+
+    private async Task HandleClick()
+    {
+        if (OnClick.HasDelegate && !IsLoading)
+        {
+            await OnClick.InvokeAsync();
+        }
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if ((e.Key == "Enter" || e.Key == " ") && OnClick.HasDelegate && !IsLoading)
+        {
+            await OnClick.InvokeAsync();
+        }
+    }
+}

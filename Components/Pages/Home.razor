@@ -1,32 +1,70 @@
 ﻿@page "/"
 
-<h1>Calendar HeatMap Demo</h1>
 
-<CalendarHeatMap DataPoints="@heatMapData" 
-                 Title="Git Contributions Style" 
-                 Weeks="12" 
-                 ShowValues="true" />
+<h1>Dashboard Demo</h1>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px;">
+    <StatCard Value="1250" 
+              Label="Total Sales" 
+              Icon="💰" 
+              IconColor="#10b981"
+              Format="C0"
+              OnClick="@(() => Console.WriteLine("Sales clicked!"))" />
+    
+    <StatCard Value="89.5m" 
+              Label="Revenue" 
+              Icon="📈" 
+              IconColor="#3b82f6"
+              Format="N1" />
+    
+    <StatCard Value="@(0.342m)" 
+              Label="Conversion Rate" 
+              Icon="🎯" 
+              IconColor="#f59e0b"
+              Format="P1" />
+    
+    <StatCard Value="456" 
+              Label="Active Users" 
+              Icon="👥" 
+              IconColor="#8b5cf6"
+              />
+</div>
+
+<HeatMap DataPoints="@heatMapData" 
+         Title="Weekly Activity Overview" 
+         ShowValues="true" />
 
 @code {
     private List<HeatMapDataPoint> heatMapData = new();
 
     protected override void OnInitialized()
     {
-        // Generar datos de ejemplo
-        var random = new Random();
-        var startDate = DateTime.Now.AddDays(-84); // 12 semanas
+        GenerateMockHeatMapData();
+    }
 
-        for (int i = 0; i < 84; i++)
+    private void GenerateMockHeatMapData()
+    {
+        var random = new Random();
+        var days = new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+        
+        // IMPORTANTE: Generar datos para CADA combinación de día y semana
+        for (int week = 1; week <= 12; week++)
         {
-            var date = startDate.AddDays(i);
-            var value = random.Next(0, 25);
-            
-            heatMapData.Add(new HeatMapDataPoint
+            foreach (var day in days)
             {
-                Date = date,
-                Value = value,
-                Label = date.ToString("MMM dd, yyyy")
-            });
+                var value = random.Next(0, 25);
+                heatMapData.Add(new HeatMapDataPoint
+                {
+                    DayName = day,
+                    WeekNumber = week,  // ESTE ES EL VALOR CLAVE
+                    Value = value,
+                    Label = $"{day}, Week {week}"
+                });
+            }
         }
+        
+        // Debug: Verificar que los datos se generaron correctamente
+        Console.WriteLine($"Total data points: {heatMapData.Count}");
+        Console.WriteLine($"Weeks range: {heatMapData.Min(d => d.WeekNumber)} to {heatMapData.Max(d => d.WeekNumber)}");
     }
 }

@@ -1,0 +1,76 @@
+<div class="heatmap-container">
+    <h3 class="heatmap-title">@Title</h3>
+    
+    <div class="heatmap-wrapper">
+        <table class="heatmap-table">
+            <thead>
+                <tr>
+                    <th class="day-header">Day</th>
+                    @for (int week = 1; week <= MaxWeeks; week++)
+                    {
+                        <th class="week-header">Week @week</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var day in DayNames)
+                {
+                    <tr>
+                        <td class="day-label">@day</td>
+                        @for (int week = 1; week <= MaxWeeks; week++)
+                        {
+                            var dataPoint = GetDataPoint(day, week);
+                            var cellClass = $"heatmap-cell heatmap-{GetValueBucket(dataPoint?.Value ?? 0)}";
+                            var tooltipText = dataPoint?.Label ?? $"{day}, Week {week}";
+                            
+                            <td class="@cellClass" title="@tooltipText - Value: @(dataPoint?.Value ?? 0)">
+                                @if (ShowValues && dataPoint != null)
+                                {
+                                    <span class="cell-value">@dataPoint.Value</span>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="heatmap-legend">
+        <span class="legend-label">Less</span>
+        <div class="legend-cell heatmap-0"></div>
+        <div class="legend-cell heatmap-5"></div>
+        <div class="legend-cell heatmap-10"></div>
+        <div class="legend-cell heatmap-15"></div>
+        <div class="legend-cell heatmap-20"></div>
+        <span class="legend-label">More</span>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<HeatMapDataPoint> DataPoints { get; set; } = new();
+    
+    [Parameter]
+    public string Title { get; set; } = "Weekly Activity Overview";
+    
+    [Parameter]
+    public bool ShowValues { get; set; } = true;
+
+    private List<string> DayNames = new() { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+    private int MaxWeeks => DataPoints.Any() ? DataPoints.Max(d => d.WeekNumber) : 12;
+
+    private HeatMapDataPoint? GetDataPoint(string day, int week)
+    {
+        return DataPoints.FirstOrDefault(d => d.DayName == day && d.WeekNumber == week);
+    }
+
+    private int GetValueBucket(int value)
+    {
+        if (value == 0) return 0;
+        if (value <= 5) return 5;
+        if (value <= 10) return 10;
+        if (value <= 15) return 15;
+        return 20;
+    }
+}
